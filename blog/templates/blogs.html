@@ -1,0 +1,55 @@
+{% extends 'logged.html' %}
+{% block content %}
+
+
+{% for blog in bloggers %}
+<div class="blogger">
+    <h2>{{ blog.user }}</h2>
+    {% if blog.user in subscriptions %}
+    <button class="btn unsubscribe">Unsubscribe</button>
+    {% else %}
+    <button class="btn subscribe">Subscribe</button>
+    {% endif %}
+</div>
+<hr>
+{% empty %}
+<p>Bloggers not found :(</p>
+{% endfor %}
+
+<script>
+    $(".subscribe").click(function(e){
+        var button = $(this).closest("button");
+        $.ajax({
+        url: {% url 'subscribe' %},
+        type: "POST",
+        data: {
+            user: button.prev().text(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: 'json',
+      });
+    });
+
+    $(".unsubscribe").click(function(e){
+        var button = $(this).closest("button");
+        $.ajax({
+        url: {% url 'unsubscribe' %},
+        type: "POST",
+        data: {
+            user: button.prev().text(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: 'json',
+
+      });
+    });
+
+    $(document).ajaxStop(function(){
+        window.location.reload();
+    });
+
+</script>
+
+{% include 'paginator.html' %}
+
+{% endblock %}

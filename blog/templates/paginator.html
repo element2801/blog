@@ -1,0 +1,13 @@
+{% if paginator.num_pages > 1 %}
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">
+            <span class="glyphicon glyphicon-chevron-left"></span>
+        </a>
+    {% endif %}
+        <span class="current_page">{{ paginator.number }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+    {% endif %}
+{% endif %}

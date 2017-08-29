@@ -1,0 +1,21 @@
+{% extends 'logged.html' %}
+{% block content %}
+
+{% include 'form.html' %}
+{% for post in posts %}
+<div class="post">
+    <h2 class="post_title">{{ post.title }}</h2>
+    <p class="post_text">{{ post.text }}</p>
+    <p class="post_time">{{ post.created }}</p>
+    <a class="post_hide">Hide</a>
+    <a class="post_read" href="{% url 'post_detail' post.user.username post.id %}">Read</a>
+</div>
+<hr>
+{% empty %}
+<p>Posts not found :(</p>
+{% endfor %}
+
+
+{% include 'paginator.html' %}
+
+{% endblock %}

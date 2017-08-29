@@ -1,0 +1,39 @@
+{% extends 'logged.html' %}
+{% block content %}
+
+{% for post in posts %}
+<div class="post">
+    <h2 id="{{ post.id }}" class="post_title">{{ post.user }} {{ post.title }}</h2>
+    <p class="post_text">{{ post.text }}</p>
+    <p class="post_time">{{ post.created }}</p>
+    <a class="post_hide">Hide</a>
+    <a class="post_read" href="{% url 'post_detail' post.user.username post.id %}">Read</a>
+</div>
+<hr>
+{% empty %}
+<p>Posts not found :(</p>
+{% endfor %}
+
+<script>
+    $(".post_hide").click(function(e){
+        var button = $(this).closest("a");
+        $.ajax({
+        url: {% url 'hide' %},
+        type: "POST",
+        data: {
+            post: button.prevAll("h2").first().attr('id'),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        dataType: 'json',
+      });
+    });
+
+    $(document).ajaxStop(function(){
+        window.location.reload();
+    });
+
+</script>
+
+{% include 'paginator.html' %}
+
+{% endblock %}
