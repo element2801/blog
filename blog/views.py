@@ -74,6 +74,10 @@ class Feed(ListView):
 
 
 class PostDetail(DetailView):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(PostDetail, self).dispatch(*args, **kwargs)
+
     model = Post
     template_name = 'post_detail.html'
 
@@ -124,6 +128,10 @@ class Unsubscribe(UpdateView):
 
 
 class Hide(UpdateView):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(Hide, self).dispatch(*args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         print(request.POST)
         post = Post.objects.get(pk=request.POST['post'])
