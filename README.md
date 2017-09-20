@@ -1,0 +1,2 @@
+# blog
+simple django blog
